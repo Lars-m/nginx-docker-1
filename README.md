@@ -15,7 +15,7 @@ set up nginx and Let’s Encrypt with Docker](https://medium.com/@pentacent/ngin
 
 - Open `default.conf` and replace ALL (four) occurences of *test.mydemos.dk* with YOUR OWN domain name
 - Open `init-letsencrypt.sh` and replace *test.mydemos.dk* with YOUR OWN Domain Name and add a valid email address
-- Observe that staging is set to 1. Leave it like that until the script executes OK, and the set it to 0
+- Observe that staging is set to 1. Leave it like that until the script executes OK, and then set it to 0
 - Make the script executable --> `sudo chmod +x init-letsencrypt.sh`
 - Execute the script --> `sudo ./init-letsencrypt`
 - When everything is fine, change *staging* to 0, and run the script agina to create the certificates --> *After that this script should not be run*
