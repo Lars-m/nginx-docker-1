@@ -1,33 +1,33 @@
-# Boilerplate for nginx with Let’s Encrypt on docker-compose
+# Boilerplate for nginx with Let’s Encrypt on docker-compose and and a simple Create-react-app application hosted on nginx
 
-> This repository is accompanied by a [step-by-step guide on how to
+This Project is built following this guide [step-by-step guide on how to
 set up nginx and Let’s Encrypt with Docker](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71).
 
-`init-letsencrypt.sh` fetches and ensures the renewal of a Let’s
-Encrypt certificate for one or multiple domains in a docker-compose
-setup with nginx.
-This is useful when you need to set up nginx as a reverse proxy for an
-application.
+### Follow the modified steps below to get this demo to work instead of the steps given in the tutorial
 
-## Installation
-1. [Install docker-compose](https://docs.docker.com/compose/install/#install-compose).
+- Setup a DOCKER droplet on DigitalOcean
+- On DigitalOcean, make a A-record using your domain to point to this droplet (in the code test.mydemos.dk is used, REPLACE all occurences as explained below)
+- Add port 80 + 443 to the firewall (Test firewall is open via docker run -d -p 80:80 nginx)
+- Clone this repository on your new Droplet
+- To build the react-code install node using option2 here: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04
 
-2. Clone this repository: `git clone https://github.com/wmnnd/nginx-certbot.git .`
+### Navigate into the project folder
 
-3. Modify configuration:
-- Add domains and email addresses to init-letsencrypt.sh
-- Replace all occurrences of example.org with primary domain (the first one you added to init-letsencrypt.sh) in data/nginx/app.conf
+- Open `default.conf` and replace ALL (four) occurences of *test.mydemos.dk* with YOUR OWN domain name
+- Open `init-letsencrypt.sh` and replace *test.mydemos.dk* with YOUR OWN Domain Name and add a valid email address
+- Observe that staging is set to 1. Leave it like that until the script executes OK, and the set it to 0
+- Make the script executable --> `sudo chmod +x init-letsencrypt.sh`
+- Execute the script --> `sudo ./init-letsencrypt`
+- When everything is fine, change *staging* to 0, and run the script agina to create the certificates --> *After that this script should not be run*
 
-4. Run the init script:
+### Build the react project
+- Navigate into the `reactapp` folder and make the buildscript executable --> `sudo chmod +x buildreactcode.sh`
+- run --> `sudo npm install`
+- Execute the script `sudo ./buildreactcode.sh`
 
-        ./init-letsencrypt.sh
+### Start nginx and the deployed react-project
 
-5. Run the server:
+- Navigate back up to the project folder and run --> `sudo docker-compose up -d`
+- Verify that your react site is hosted on your domain name using HTTPS
 
-        docker-compose up
 
-## Got questions?
-Feel free to post questions in the comment section of the [accompanying guide](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
-
-## License
-All code in this repository is licensed under the terms of the `MIT License`. For further information please refer to the `LICENSE` file.
